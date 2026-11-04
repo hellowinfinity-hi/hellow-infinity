@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="si">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Budget - Hellow Infinity</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101827;color:white;font-family:Arial,sans-serif;padding:20px}
+header{text-align:center;padding:15px}
+header h1{color:#55dfbd}
+header p{color:#aab6c8}
+.card{background:#1d2b40;padding:20px;border-radius:18px;margin:14px 0}
+.balance{text-align:center}
+.balance h2{font-size:32px;color:#55dfbd}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stats .card{margin:0}
+.income{color:#55dfbd}
+.expense{color:#ff8585}
+input,select,button{width:100%;padding:13px;margin:7px 0;border:0;border-radius:10px;font-size:16px}
+input,select{background:#293950;color:white}
+button{background:#55dfbd;color:#102030;font-weight:bold}
+h3{margin-top:5px}
+li{list-style:none;background:#293950;padding:13px;margin:9px 0;border-radius:10px;display:flex;justify-content:space-between;gap:8px}
+small{color:#aab6c8}
+footer{text-align:center;color:#8492a6;padding:20px;font-size:12px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Hellow Infinity</h1>
+<p>My Budget – ඔබේ මුදල් කළමනාකරණය</p>
+</header>
+
+<div class="card balance">
+<small>මුළු ශේෂය (LKR)</small>
+<h2 id="balance">රු. 0.00</h2>
+</div>
+
+<div class="stats">
+<div class="card">
+<h3 class="income">ආදායම</h3>
+<h2 id="income">0</h2>
+</div>
+<div class="card">
+<h3 class="expense">වියදම</h3>
+<h2 id="expense">0</h2>
+</div>
+</div>
+
+<div class="card">
+<h3>+ අලුත් ගනුදෙනුවක්</h3>
+<select id="type">
+<option value="income">ආදායම</option>
+<option value="expense">වියදම</option>
+</select>
+<input id="note" placeholder="විස්තරය">
+<input id="amount" type="number" min="0.01" step="0.01" placeholder="මුදල (LKR)">
+<button onclick="addTransaction()">ගනුදෙනුව සුරකින්න</button>
+</div>
+
+<div class="card">
+<h3>ගනුදෙනු ඉතිහාසය</h3>
+<ul id="history"></ul>
+</div>
+
+<footer>© Hellow Infinity | Create • Innovate • Inspire</footer>
+
+<script>
+let transactions=JSON.parse(localStorage.getItem("myBudgetData")||"[]");
+
+function money(n){
+return "රු. "+n.toLocaleString("en-LK",{minimumFractionDigits:2});
+}
+
+function render(){
+let inc=0,exp=0;
+transactions.forEach(t=>{
+if(t.type==="income")inc+=t.amount;
+else exp+=t.amount;
+});
+document.getElementById("income").textContent=money(inc);
+document.getElementById("expense").textContent=money(exp);
+document.getElementById("balance").textContent=money(inc-exp);
+
+let list=document.getElementById("history");
+list.innerHTML="";
+transactions.slice().reverse().forEach(t=>{
+let li=document.createElement("li");
+let left=document.createElement("span");
+let right=document.createElement("strong");
+left.textContent=t.note+" · "+t.date;
+right.textContent=(t.type==="income"?"+ ":"- ")+money(t.amount);
+right.style.color=t.type==="income"?"#55dfbd":"#ff8585";
+li.append(left,right);
+list.appendChild(li);
+});
+}
+
+function addTransaction(){
+let note=document.getElementById("note").value.trim();
+let amount=Number(document.getElementById("amount").value);
+let type=document.getElementById("type").value;
+
+if(!note||!Number.isFinite(amount)||amount<=0){
+alert("කරුණාකර විස්තරය සහ නිවැරදි මුදල ඇතුළත් කරන්න.");
+return;
+}
+
+transactions.push({
+note,amount,type,
+date:new Date().toLocaleDateString()
+});
+
+localStorage.setItem("myBudgetData",JSON.stringify(transactions));
+document.getElementById("note").value="";
+document.getElementById("amount").value="";
+render();
+}
+
+render();
+</script>
+</body>
+  </html>
+  
