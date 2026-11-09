@@ -4,124 +4,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Budget - Hellow Infinity</title>
+<title>My Budget</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#101827;color:white;font-family:Arial,sans-serif;padding:20px}
-header{text-align:center;padding:15px}
-header h1{color:#55dfbd}
-header p{color:#aab6c8}
-.card{background:#1d2b40;padding:20px;border-radius:18px;margin:14px 0}
-.balance{text-align:center}
-.balance h2{font-size:32px;color:#55dfbd}
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.stats .card{margin:0}
-.income{color:#55dfbd}
-.expense{color:#ff8585}
-input,select,button{width:100%;padding:13px;margin:7px 0;border:0;border-radius:10px;font-size:16px}
-input,select{background:#293950;color:white}
-button{background:#55dfbd;color:#102030;font-weight:bold}
-h3{margin-top:5px}
-li{list-style:none;background:#293950;padding:13px;margin:9px 0;border-radius:10px;display:flex;justify-content:space-between;gap:8px}
-small{color:#aab6c8}
-footer{text-align:center;color:#8492a6;padding:20px;font-size:12px}
+body{margin:0;background:#f2f5f9;color:#202b3c;font-family:Arial,sans-serif}
+header{background:#173b68;color:white;padding:24px 18px;border-radius:0 0 24px 24px}
+header h1{margin:0;font-size:27px}
+header p{margin:7px 0 0;color:#dce8f5}
+main{padding:16px;max-width:650px;margin:auto}
+.card{background:white;padding:18px;border-radius:17px;margin-bottom:15px;box-shadow:0 3px 12px #0000000b}
+.balance{background:#e7f0ff}
+.small{color:#68768a;font-size:14px}
+.amount{font-size:27px;font-weight:bold;margin-top:8px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.green{color:#15965d}.red{color:#d94a4a}
+input,select,button{width:100%;padding:13px;margin-top:9px;border:1px solid #dce2eb;border-radius:10px;font-size:15px}
+button{background:#173b68;color:white;border:0;font-weight:bold;cursor:pointer}
+button.delete{background:#ffe8e8;color:#b52e2e;width:auto;padding:8px}
+h3{margin-top:0}
+.item{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;padding:12px 0;gap:8px}
+footer{text-align:center;color:#8290a1;padding:20px;font-size:12px}
 </style>
 </head>
 <body>
-
 <header>
-<h1>Hellow Infinity</h1>
-<p>My Budget – ඔබේ මුදල් කළමනාකරණය</p>
+<h1>My Budget</h1>
+<p>ඔබේ මුදල් කළමනාකරණය පහසු කරගන්න</p>
 </header>
 
+<main>
 <div class="card balance">
-<small>මුළු ශේෂය (LKR)</small>
-<h2 id="balance">රු. 0.00</h2>
+<div class="small">මුළු ශේෂය (LKR)</div>
+<div class="amount" id="balance">රු. 0.00</div>
 </div>
 
-<div class="stats">
+<div class="grid">
 <div class="card">
-<h3 class="income">ආදායම</h3>
-<h2 id="income">0</h2>
+<div class="small">මුළු ආදායම</div>
+<div class="amount green" id="income">0.00</div>
 </div>
 <div class="card">
-<h3 class="expense">වියදම</h3>
-<h2 id="expense">0</h2>
+<div class="small">මුළු වියදම</div>
+<div class="amount red" id="expense">0.00</div>
 </div>
 </div>
 
 <div class="card">
-<h3>+ අලුත් ගනුදෙනුවක්</h3>
+<h3>නව ගනුදෙනුවක්</h3>
 <select id="type">
 <option value="income">ආදායම</option>
 <option value="expense">වියදම</option>
 </select>
-<input id="note" placeholder="විස්තරය">
-<input id="amount" type="number" min="0.01" step="0.01" placeholder="මුදල (LKR)">
-<button onclick="addTransaction()">ගනුදෙනුව සුරකින්න</button>
+<input id="description" placeholder="විස්තරය (උදා: වැටුප)">
+<input id="amount" type="number" min="0.01" step="0.01" placeholder="මුදල">
+<select id="currency">
+<option value="LKR">LKR - ශ්‍රී ලංකා රුපියල්</option>
+<option value="USD">USD - ඇමරිකානු ඩොලර්</option>
+</select>
+<button onclick="addTransaction()">ගනුදෙනුව එකතු කරන්න</button>
+<p class="small">සටහන: USD ගනුදෙනු දැනට වෙනම පෙන්වයි.</p>
+</div>
+
+<div class="card">
+<h3>USD ගිණුම</h3>
+<div class="small">USD ආදායම</div>
+<div class="green" id="usdIncome">0.00</div>
+<div class="small">USD වියදම</div>
+<div class="red" id="usdExpense">0.00</div>
+<div class="small">USD ශේෂය</div>
+<div class="amount" id="usdBalance">$0.00</div>
 </div>
 
 <div class="card">
 <h3>ගනුදෙනු ඉතිහාසය</h3>
-<ul id="history"></ul>
+<div id="history" class="small">තවම ගනුදෙනු නැත.</div>
 </div>
+</main>
 
-<footer>© Hellow Infinity | Create • Innovate • Inspire</footer>
+<footer>My Budget • ඔබේ මුදල්, ඔබේ පාලනය</footer>
 
 <script>
-let transactions=JSON.parse(localStorage.getItem("myBudgetData")||"[]");
+let transactions=[];
+try{
+transactions=JSON.parse(localStorage.getItem("myBudgetData")||"[]");
+if(!Array.isArray(transactions)) transactions=[];
+}catch(e){transactions=[];}
 
-function money(n){
-return "රු. "+n.toLocaleString("en-LK",{minimumFractionDigits:2});
-}
-
-function render(){
-let inc=0,exp=0;
-transactions.forEach(t=>{
-if(t.type==="income")inc+=t.amount;
-else exp+=t.amount;
-});
-document.getElementById("income").textContent=money(inc);
-document.getElementById("expense").textContent=money(exp);
-document.getElementById("balance").textContent=money(inc-exp);
-
-let list=document.getElementById("history");
-list.innerHTML="";
-transactions.slice().reverse().forEach(t=>{
-let li=document.createElement("li");
-let left=document.createElement("span");
-let right=document.createElement("strong");
-left.textContent=t.note+" · "+t.date;
-right.textContent=(t.type==="income"?"+ ":"- ")+money(t.amount);
-right.style.color=t.type==="income"?"#55dfbd":"#ff8585";
-li.append(left,right);
-list.appendChild(li);
-});
+function save(){
+localStorage.setItem("myBudgetData",JSON.stringify(transactions));
+render();
 }
 
 function addTransaction(){
-let note=document.getElementById("note").value.trim();
-let amount=Number(document.getElementById("amount").value);
-let type=document.getElementById("type").value;
+const type=document.getElementById("type").value;
+const description=document.getElementById("description").value.trim();
+const amount=Number(document.getElementById("amount").value);
+const currency=document.getElementById("currency").value;
 
-if(!note||!Number.isFinite(amount)||amount<=0){
-alert("කරුණාකර විස්තරය සහ නිවැරදි මුදල ඇතුළත් කරන්න.");
+if(!description||!Number.isFinite(amount)||amount<=0){
+alert("නිවැරදි විස්තරයක් සහ මුදලක් ඇතුළත් කරන්න.");
 return;
 }
 
-transactions.push({
-note,amount,type,
-date:new Date().toLocaleDateString()
+transactions.unshift({
+id:Date.now(),
+type,description,amount,currency,
+date:new Date().toLocaleString("si-LK")
 });
 
-localStorage.setItem("myBudgetData",JSON.stringify(transactions));
-document.getElementById("note").value="";
+save();
+document.getElementById("description").value="";
 document.getElementById("amount").value="";
-render();
 }
 
+function removeTransaction(id){
+if(!confirm("මෙම ගනුදෙනුව මකා දමන්නද?"))return;
+transactions=transactions.filter(t=>t.id!==id);
+save();
+}
+
+function render(){
+let income=0,expense=0,ui=0,ue=0;
+transactions.forEach(t=>{
+if(t.currency==="LKR"){
+if(t.type==="income")income+=t.amount;
+else expense+=t.amount;
+}else{
+if(t.type==="income")ui+=t.amount;
+else ue+=t.amount;
+}
+});
+
+const money=n=>"රු. "+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+document.getElementById("income").textContent=money(income);
+document.getElementById("expense").textContent=money(expense);
+document.getElementById("balance").textContent=money(income-expense);
+document.getElementById("usdIncome").textContent="$"+ui.toFixed(2);
+document.getElementById("usdExpense").textContent="$"+ue.toFixed(2);
+document.getElementById("usdBalance").textContent="$"+(ui-ue).toFixed(2);
+
+const history=document.getElementById("history");
+if(!transactions.length){
+history.textContent="තවම ගනුදෙනු නැත.";
+return;
+}
+
+history.innerHTML="";
+transactions.forEach(t=>{
+const row=document.createElement("div");
+row.className="item";
+const info=document.createElement("div");
+const name=document.createElement("strong");
+name.textContent=t.description;
+const date=document.createElement("div");
+date.textContent=t.date;
+const value=document.createElement("div");
+value.className=t.type==="income"?"green":"red";
+value.textContent=(t.type==="income"?"+":"-")+
+(t.currency==="USD"?"$":"රු. ")+t.amount.toFixed(2);
+info.append(name,date);
+const del=document.createElement("button");
+del.className="delete";
+del.textContent="මකන්න";
+del.onclick=()=>removeTransaction(t.id);
+row.append(info,value,del);
+history.append(row);
+});
+}
 render();
 </script>
 </body>
-  </html>
-  
+</html>
